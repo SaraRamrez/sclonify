@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { usePlayerStore } from "../store/playerStore";
 
-const Pause = () => (
+export const Pause = () => (
   <svg
     role="img"
     height="16"
@@ -13,7 +14,7 @@ const Pause = () => (
   </svg>
 );
 
-const Play = () => (
+export const Play = () => (
   <svg
     role="img"
     height="16"
@@ -27,7 +28,25 @@ const Play = () => (
 );
 
 export function Player() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isPlaying, setIsPlaying } = usePlayerStore(state => state)
+  const [currentSong, setCurrentSong] = useState(null);
+  const audioRef = useRef();
+
+  useEffect (() => {
+          audioRef.current.src = `music/1/01.mp3`
+  }, [])
+
+  const handleClick = () => {
+    if (isPlaying){
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+      audioRef.current.volume = 0.5
+    }
+    
+    setIsPlaying(!isPlaying)
+  } 
+
   return (
     <div className="flex flex-row justify-between w-full px-4 z-50">
       <div>CurrentSong...</div>
@@ -36,14 +55,18 @@ export function Player() {
         <div className="flex justify-center">
           <button
             className=" bg-white rounded-full p-2"
-            onClick={() => setIsPlaying(!isPlaying)}
-          >
+            onClick={(handleClick)}>
             {isPlaying ? <Pause /> : <Play />}
+            <audio ref={audioRef} />
           </button>
         </div>
       </div>
 
-      <div>Volume</div>
+      <div className="grid place-content-center">
+
+      </div>
+
+
     </div>
   );
 }
