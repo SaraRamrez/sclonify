@@ -1,5 +1,5 @@
 ---
-import type { Playlist } from '../lib/data';
+import type { Playlist } from "../lib/data";
 
 interface Props {
   playlist: Playlist;
@@ -7,7 +7,7 @@ interface Props {
 const { playlist } = Astro.props;
 const { id, cover, title, artists, color } = playlist;
 
-const artistsString = artists.join(', ');
+const artistsString = artists.join(", ");
 ---
 
 <a
@@ -24,10 +24,10 @@ const artistsString = artists.join(', ');
     />
   </picture>
   <div class='flex flex-auto flex-col p-x-2'>
-    <h4 class='text-white text-sm'>
+    <h4 class='text-white text-sm' transition:name=`playlist ${playlist?.id} title`>
       {title}
     </h4>
-    <span class='text-xs text-gray-400'>
+    <span class='text-xs text-gray-400' transition:name=`playlist ${playlist?.id} artists`>
       {artistsString}
     </span>
   </div>
