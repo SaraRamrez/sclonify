@@ -34,6 +34,42 @@ const CurrentSong = ({ image, title, artists }) => {
   );
 };
 
+const SongControl = ({ audio }) => {
+  const [currentTime, setCurrentTime] = useState(0)
+
+  useEffect(() => {
+    audio.current.addEventListener('timeupdate', handleTimeUpdate)
+
+    return () => {
+      audio.current.removeEventListener('timeupdate', handleTimeUpdate)
+    }
+})
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audio.current.currentTime)
+  }
+
+  return (
+    <div>
+      <span>00:00</span>
+
+      <Slider
+    defaultValue={[0]}
+    value={[currentTime]}
+    max={audio?.current?.duration ?? 0}
+    min={0}
+    className="w-[500px]"
+    onValueChange={(value) => {
+      audio.current.currentTime = value
+    }}
+  />
+
+      <span>00:00</span>
+    </div>
+  )
+}
+
+
 export const Play = () => (
   <svg
     role="img"
